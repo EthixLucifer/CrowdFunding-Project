@@ -38,12 +38,13 @@ contract crowdFunding {
         return address(this).balance;
     }
 
-    function refund() public{
+    function refund() public {
 
-        require(block.timestamp > deadline && raisedAmount < target, "Eligibility criteria for the refund process not met");
+        require(block.timestamp > deadline && raisedAmount < targetAmount, "Eligibility criteria for the refund process not met");
         require (contributors[msg.sender] > 0, "Only Contributors are allowed to have refund");
-        
-
+        address payable refundUser = payable(msg.sender);
+        refundUser.transfer(contributors[msg.sender]); 
+        contributors[msg.sender] = 0;
 
     }
 }
